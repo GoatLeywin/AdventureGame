@@ -49,26 +49,3 @@ bool Room::takeItem(const string& item, Player& player) {
     cout << "That item isn't here." << endl;
     return false;
 }
-
-Room Room::getRoomFromCoordinates(int x, int y) {
-    // This is just a stub. Ideally, you'd load the room data from a file or database.
-    // For simplicity, we assume the room exists if coordinates match.
-
-    // Let's just create a dummy room here for now.
-    Room room;
-    room.setCoordinates(x, y);
-
-    stringstream filename;
-    filename << "Rooms/room_" << x << "_" << y << ".txt";
-
-    ifstream file(filename.str());
-    if (file.good()) {
-        room.loadFromFile(filename.str());
-    }
-    else {
-        // If the file doesn't exist, return an empty room.
-        room.setCoordinates(-1, -1);
-    }
-
-    return room;
-}
