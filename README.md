@@ -46,6 +46,7 @@ golden key: You unlock the western door! -> unlock_direction:west
 - `use [item]` — use an item from your inventory
 - `go [direction]` — move to another room (north, south, east, west)
 - `inventory` — view your current inventory
+- `help` — outputs all commands
 - `quit` — exit the game
 
 ---
