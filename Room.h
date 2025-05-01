@@ -21,7 +21,6 @@ public:
     void loadFromFile(const std::string& filename);
     void describeRoom() const;
     bool takeItem(const std::string& item, Player& player);
-    Room getRoomFromCoordinates(int x, int y);  // Get room based on coordinates
 };
 
 #endif
