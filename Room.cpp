@@ -19,11 +19,31 @@ void Room::loadFromFile(const string& filename) {
     ifstream file(filename);
     string line;
 
+    if (!file.is_open()) {
+        cout << "Error opening file: " << filename << endl;
+        return;
+    }
+
+    bool inUsableItemsSection = false;
+
     while (getline(file, line)) {
         // Check if the line starts with "description:"
         if (line.substr(0, 12) == "description:") {
             description = line.substr(12);
         }
+        
+        else if (line.substr(0, 6) == "exits:") {
+        string exitsLine = line.substr(6);
+        stringstream ss(exitsLine);
+        string exit;
+        while (getline(ss, exit, ',')) {
+            // trim leading spaces
+            exit.erase(exit.begin(), find_if(exit.begin(), exit.end(), [](unsigned char ch) {
+            return !isspace(ch);
+        }));
+        exits.push_back(exit);
+        }
+    }
         // Check if the line starts with "items:"
         else if (line.substr(0, 6) == "items:") {
             string itemsLine = line.substr(6);
@@ -31,6 +51,31 @@ void Room::loadFromFile(const string& filename) {
             string item;
             while (getline(ss, item, ',')) {
                 items.push_back(string(item.begin() + (item[0] == ' '), item.end())); // trim leading space
+            }
+        }
+        // Check if the line starts with "usable_items:"
+        else if (line.substr(0, 13) == "usable_items:") {
+            inUsableItemsSection = true;
+        }
+        // If we are in the "usable_items:" section, parse each item
+        else if (inUsableItemsSection) {
+            // Expect lines in the form of item_name: description -> action
+            size_t delimiterPos = line.find(":");
+            if (delimiterPos != string::npos) {
+                string itemName = line.substr(0, delimiterPos);
+                // Replace underscores with spaces
+                for (char& c : itemName) {
+                    if (c == '_') c = ' ';
+                }
+                string itemDescription = line.substr(delimiterPos + 1);
+
+                // Find the action part
+                size_t actionPos = itemDescription.find("->");
+                if (actionPos != string::npos) {
+                    string action = itemDescription.substr(actionPos + 2); // Get the action part after "->"
+                    itemDescription = itemDescription.substr(0, actionPos); // Update the description part
+                    usableItems[itemName] = make_pair(itemDescription, action); // Store description and action
+                }
             }
         }
     }
@@ -49,3 +94,48 @@ bool Room::takeItem(const string& item, Player& player) {
     cout << "That item isn't here." << endl;
     return false;
 }
+
+bool Room::useItem(const string& item, Player& player) {
+    auto it = usableItems.find(item);
+    if (it == usableItems.end()) {
+        cout << "You can't use that here." << endl;
+        return false;
+    }
+
+    cout << it->second.first << endl;
+
+    string effect = it->second.second;
+
+    // Trim leading spaces from effect
+    effect.erase(0, effect.find_first_not_of(' '));
+
+    if (effect.substr(0, 9) == "add_item:") {
+    string newItem = effect.substr(9);
+    
+    // Replace underscores with spaces
+    for (char& c : newItem) {
+        if (c == '_') c = ' ';
+    }
+    items.push_back(newItem);
+    }
+    else if (effect.substr(0, 17) == "unlock_direction:") {
+    string direction = effect.substr(17);
+    exits.push_back(direction); // Actually unlock it now!
+    }
+    else {
+        cout << "Nothing happens..." << endl;
+    }
+
+    return true;
+}
+
+bool Room::canExit(const std::string& direction) const {
+    return std::find(exits.begin(), exits.end(), direction) != exits.end();
+}
+
+void Room::unlockExit(const std::string& direction) {
+    if (!canExit(direction)) {
+        exits.push_back(direction);
+    }
+}
+
