@@ -1,0 +1,2 @@
+description:You are in a lush garden. Sunlight beams through the trees.
+items: shovel
