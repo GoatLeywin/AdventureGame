@@ -30,11 +30,11 @@ A **modular**, **expandable** system for creating text-based adventure games usi
 ## Example Room File
 
 ```plaintext
-description: You are in a dusty library. A locked door lies to the west and an open archway lies to the east.
+description:You are in a dusty library. A locked door lies to the west and an open archway lies to the east.
 items: torch, book
 exits: east
 usable_items:
-torch: The torch lights up the dark corner, revealing a golden key! -> add_item:golden key
+torch: The torch lights up the dark corner, revealing a golden key! -> add_item:golden key -> add_item:silver key
 golden key: You unlock the western door! -> unlock_direction:west
 ```
 
