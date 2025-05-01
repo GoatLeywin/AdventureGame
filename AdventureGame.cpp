@@ -19,26 +19,7 @@ Room* getRoomFromCoordinates(const vector<Room>& rooms, int x, int y) {
 int main() {
     vector<Room> rooms;
     
-    // Initialize the rooms
-    Room library;
-    library.setCoordinates(0, 0);
-    library.loadFromFile("library.txt");
-    rooms.push_back(library);
-
-    Room garden;
-    garden.setCoordinates(1, 0);
-    garden.loadFromFile("garden.txt");
-    rooms.push_back(garden);
-    
-    Room mine;
-    mine.setCoordinates(-1, 0);
-    mine.loadFromFile("mine.txt");
-    rooms.push_back(mine);
-    
-    Room gold_room;
-    gold_room.setCoordinates(-1, 1);
-    gold_room.loadFromFile("gold_room.txt");
-    rooms.push_back(gold_room);
+    // Initialize Rooms Here
     
     // Create the player
     Player player(0, 0, 100);
