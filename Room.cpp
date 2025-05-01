@@ -95,38 +95,40 @@ bool Room::takeItem(const string& item, Player& player) {
     return false;
 }
 
-bool Room::useItem(const string& item, Player& player) {
-    auto it = usableItems.find(item);
-    if (it == usableItems.end()) {
-        cout << "You can't use that here." << endl;
-        return false;
-    }
+void Room::useItem(const string& itemName, Player& player) {
+    auto it = usableItems.find(itemName);
+    if (it != usableItems.end()) {
+        cout << " " << it->second.first << endl; // Description when item is used
 
-    cout << it->second.first << endl;
+        string effects = it->second.second;
+        stringstream ss(effects);
+        string singleEffect;
 
-    string effect = it->second.second;
+        while (getline(ss, singleEffect, '-')) {
+            if (!singleEffect.empty() && singleEffect[0] == '>') {
+                singleEffect = singleEffect.substr(1);
+            }
+            singleEffect.erase(0, singleEffect.find_first_not_of(" \t"));
+            singleEffect.erase(singleEffect.find_last_not_of(" \t") + 1);
 
-    // Trim leading spaces from effect
-    effect.erase(0, effect.find_first_not_of(' '));
-
-    if (effect.substr(0, 9) == "add_item:") {
-    string newItem = effect.substr(9);
-    
-    // Replace underscores with spaces
-    for (char& c : newItem) {
-        if (c == '_') c = ' ';
-    }
-    items.push_back(newItem);
-    }
-    else if (effect.substr(0, 17) == "unlock_direction:") {
-    string direction = effect.substr(17);
-    exits.push_back(direction); // Actually unlock it now!
+            if (singleEffect.substr(0, 9) == "add_item:") {
+                string newItem = singleEffect.substr(9);
+                items.push_back(newItem);
+                cout << "A new item appeared: " << newItem << "!" << endl;
+            }
+            else if (singleEffect.substr(0, 17) == "unlock_direction:") {
+                string direction = singleEffect.substr(17);
+                exits.push_back(direction);
+                cout << "You can now go " << direction << "!" << endl;
+            }
+            else {
+                cout << "Nothing happens..." << endl;
+            }
+        }
     }
     else {
-        cout << "Nothing happens..." << endl;
+        cout << "You can't use that here." << endl;
     }
-
-    return true;
 }
 
 bool Room::canExit(const std::string& direction) const {
