@@ -1,2 +1,2 @@
-description: You are in a dusty old library with books scattered all around with a torch on the wall.
+description:You are in a dusty old library with books scattered all around with a torch on the wall.
 items: torch, book
