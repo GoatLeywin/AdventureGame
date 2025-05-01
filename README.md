@@ -66,7 +66,10 @@ golden key: You unlock the western door! -> unlock_direction:west
 2. Add the room in `AdventureGame.cpp` (or wherever rooms are initialized) using:
 
 ```cpp
-InitializeRoom("RoomName", "roomfile.txt", x_coord, y_coord);
+Room [ROOM NAME];
+[ROOM NAME].setCoordinates(-1, 0);
+[ROOM NAME].loadFromFile("mine.txt");
+rooms.push_back([ROOM NAME]);
 ```
 
 3. Done! Players can now visit your new room.
