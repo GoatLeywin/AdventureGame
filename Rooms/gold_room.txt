@@ -1,5 +1,0 @@
-description: You step into a dazzling chamber where the walls shimmer with veins of gold. Piles of treasure glint in the torchlight. A heavy iron door stands to the south, and a narrow crack in the wall leads west.
-items: golden goblet, jeweled crown
-exits: south
-usable_items:
-pickaxe: You strike the gold veins, dislodging a hidden gemstone! -> add_item:precious gemstone

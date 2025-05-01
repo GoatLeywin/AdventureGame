@@ -1,5 +1,0 @@
-description: You are deep within an abandoned mine. The air is damp and heavy, and the sound of dripping water echoes around you.
-items: pickaxe, lantern
-exits: east
-usable_items:
-pickaxe: You strike the weak wall with your pickaxe, revealing a hidden tunnel! -> unlock_direction:north
