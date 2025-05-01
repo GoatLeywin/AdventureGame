@@ -1,2 +1,5 @@
-description:You are in a lush garden. Sunlight beams through the trees.
+description: You are in a lush garden where sunlight beams through the leafy canopy. A stone path winds north, and a weathered gate stands open to the west.
 items: shovel
+exits: west
+usable_items:
+shovel: You dig into the soil and find a hidden chest! -> add_item:chest
