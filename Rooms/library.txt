@@ -1,4 +1,4 @@
-description: You are in a dusty library filled with towering shelves and ancient tomes. A locked wooden door bars passage to the west, while an open archway leads invitingly to the east.
+description: You are in a dusty library shrouded in darkness filled with towering shelves, ancient tomes, and a torch hangs on the wall. A locked wooden door bars passage to the west, while an open archway leads invitingly to the east.
 items: torch, book
 exits: east
 usable_items:
