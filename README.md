@@ -67,8 +67,8 @@ golden key: You unlock the western door! -> unlock_direction:west
 
 ```cpp
 Room [ROOM NAME];
-[ROOM NAME].setCoordinates(-1, 0);
-[ROOM NAME].loadFromFile("mine.txt");
+[ROOM NAME].setCoordinates([X], [Y]);
+[ROOM NAME].loadFromFile("[FILE NAME]");
 rooms.push_back([ROOM NAME]);
 ```
 
