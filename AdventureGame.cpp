@@ -30,6 +30,11 @@ int main() {
     garden.loadFromFile("garden.txt");
     rooms.push_back(garden);
     
+    Room mine;
+    mine.setCoordinates(-1, 0);
+    mine.loadFromFile("mine.txt");
+    rooms.push_back(mine);
+    
     // Create the player
     Player player(0, 0, 100);
 
@@ -54,12 +59,22 @@ int main() {
             string item = command.substr(5);
             currentRoom->takeItem(item, player);
         }
+        else if (command.substr(0, 4) == "use ") {
+            string item = command.substr(4);
+
+            if (!player.hasItem(item)) {
+                cout << "You don't have a " << item << "." << endl;
+            }
+            else {
+                currentRoom->useItem(item, player);
+            }
+        }
         else if (command.substr(0, 3) == "go ") {
             string direction = command.substr(3);
 
-            if (!player.canMove(direction)) {
-                cout << "You cannot walk this way." << endl;
-                continue;
+            if (!currentRoom->canExit(direction)) {
+            cout << "You cannot walk this way." << endl;
+            continue;
             }
 
             int oldX = player.getX();
