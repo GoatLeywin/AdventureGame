@@ -1,2 +1,6 @@
-description:You are in a dusty library. A locked door lies to the east.
+description: You are in a dusty library filled with towering shelves and ancient tomes. A locked wooden door bars passage to the west, while an open archway leads invitingly to the east.
 items: torch, book
+exits: east
+usable_items:
+torch: The torch lights up the dark corner, revealing a golden key! -> add_item:golden key
+golden key: You unlock the western door! -> unlock_direction:west
