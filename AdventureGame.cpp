@@ -6,53 +6,66 @@
 
 using namespace std;
 
-int main() {
-    // Create the player with initial coordinates and health
-    Player player(0, 0, 100);
+// New function to search for a room by coordinates
+Room* getRoomFromCoordinates(const vector<Room>& rooms, int x, int y) {
+    for (const auto& room : rooms) {
+        if (room.getX() == x && room.getY() == y) {
+            return new Room(room); // Return a copy (you could also return pointer to const Room to avoid allocation)
+        }
+    }
+    return nullptr; // No matching room found
+}
 
-    // Initialize the room
+int main() {
+    vector<Room> rooms;
+    
+    // Initialize the rooms
     Room library;
     library.setCoordinates(0, 0);
-    library.loadFromFile("Rooms/library.txt");
+    library.loadFromFile("library.txt");
+    rooms.push_back(library);
 
     Room garden;
-    garden.setCoordinates(0, 0);
-    library.loadFromFile("Rooms/library.txt");
+    garden.setCoordinates(1, 0);
+    garden.loadFromFile("garden.txt");
+    rooms.push_back(garden);
+    
+    // Create the player
+    Player player(0, 0, 100);
 
-
-
-    // Describe the current room
-    library.describeRoom();
+    // Get the starting room
+    Room* currentRoom = getRoomFromCoordinates(rooms, player.getX(), player.getY());
+    if (currentRoom) {
+        currentRoom->describeRoom();
+    } else {
+        cout << "Starting room not found!" << endl;
+        return 1;
+    }
 
     string command;
     while (true) {
         cout << "\n> ";
         getline(cin, command);
 
-        // Check if the command is "quit"
         if (command == "quit") {
             break;
         }
-        // Check if the command starts with "take "
         else if (command.substr(0, 5) == "take ") {
             string item = command.substr(5);
-            library.takeItem(item, player);
+            currentRoom->takeItem(item, player);
         }
-        // Check if the command starts with "go "
         else if (command.substr(0, 3) == "go ") {
             string direction = command.substr(3);
 
-            // Check if the player can move in the specified direction
             if (!player.canMove(direction)) {
                 cout << "You cannot walk this way." << endl;
                 continue;
             }
 
-            // Store the old coordinates before moving
             int oldX = player.getX();
             int oldY = player.getY();
 
-            // Update coordinates based on direction
+            // Update player coordinates temporarily
             if (direction == "north") player.setCoordinates(player.getX(), player.getY() + 1);
             else if (direction == "south") player.setCoordinates(player.getX(), player.getY() - 1);
             else if (direction == "east") player.setCoordinates(player.getX() + 1, player.getY());
@@ -62,24 +75,20 @@ int main() {
                 continue;
             }
 
-            // Get the room from the new coordinates
-            Room newRoom = library.getRoomFromCoordinates(player.getX(), player.getY());
+            // Try to find the new room
+            Room* newRoom = getRoomFromCoordinates(rooms, player.getX(), player.getY());
 
-            // If the room exists, allow the player to enter and describe it
-            if (newRoom.getX() != -1 && newRoom.getY() != -1) {
+            if (newRoom) {
                 cout << "You move " << direction << "." << endl;
-                newRoom.describeRoom();
-                library = newRoom;  // Update the library to the new room
+                delete currentRoom; // Free the old current room
+                currentRoom = newRoom;
+                currentRoom->describeRoom();
             }
             else {
-                // If no room exists, inform the player they cannot go in that direction
                 cout << "You cannot walk this way." << endl;
-
-                // Restore the original coordinates (stay in the same room)
-                player.setCoordinates(oldX, oldY);
+                player.setCoordinates(oldX, oldY); // Go back
             }
         }
-        // Check if the command is "inventory"
         else if (command == "inventory") {
             cout << "Inventory: ";
             for (const string& item : player.getInventory()) {
@@ -92,5 +101,6 @@ int main() {
         }
     }
 
+    delete currentRoom; // Clean up memory when exiting
     return 0;
 }
