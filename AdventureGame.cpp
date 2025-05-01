@@ -35,12 +35,19 @@ int main() {
     mine.loadFromFile("mine.txt");
     rooms.push_back(mine);
     
+    Room gold_room;
+    gold_room.setCoordinates(-1, 1);
+    gold_room.loadFromFile("gold_room.txt");
+    rooms.push_back(gold_room);
+    
     // Create the player
     Player player(0, 0, 100);
 
     // Get the starting room
     Room* currentRoom = getRoomFromCoordinates(rooms, player.getX(), player.getY());
     if (currentRoom) {
+        cout << "Welcome to my Adventure Game have fun!\n";
+        cout << "these are all of the commands!\ntake {item}\ngo {direction}\ninventory\nuse {item}\nhelp\nquit\n\n";
         currentRoom->describeRoom();
     } else {
         cout << "Starting room not found!" << endl;
@@ -111,6 +118,7 @@ int main() {
             }
             cout << endl;
         }
+        else if (command == "help") {cout << "take {item}\ngo {direction}\ninventory\nuse {item}\nquit";}
         else {
             cout << "Unknown command." << endl;
         }
