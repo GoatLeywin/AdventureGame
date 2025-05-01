@@ -4,7 +4,8 @@
 
 #include <string>
 #include <vector>
-#include "Player.h" // Include Player class
+#include <map>
+#include "Player.h"
 
 class Room {
 private:
@@ -12,6 +13,8 @@ private:
     double y_coord;
     std::string description;
     std::vector<std::string> items;
+    std::map<std::string, std::pair<std::string, std::string>> usableItems;
+    std::vector<std::string> exits;
 
 public:
     void setCoordinates(int, int);
@@ -21,6 +24,10 @@ public:
     void loadFromFile(const std::string& filename);
     void describeRoom() const;
     bool takeItem(const std::string& item, Player& player);
+    bool useItem(const std::string& item, Player& player);
+    
+    bool canExit(const std::string& direction) const;
+    void unlockExit(const std::string& direction);
 };
 
 #endif
