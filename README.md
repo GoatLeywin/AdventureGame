@@ -35,4 +35,8 @@ items: torch, book
 exits: east
 usable_items:
 torch: The torch lights up the dark corner, revealing a golden key! -> add_item:golden key
-golden key: You unlock the western door! -> unlock_direction:west
+golden key: You unlock the western door! -> unlock_direction:west ```
+
+n
+
+
