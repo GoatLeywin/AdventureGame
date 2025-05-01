@@ -24,7 +24,7 @@ public:
     void loadFromFile(const std::string& filename);
     void describeRoom() const;
     bool takeItem(const std::string& item, Player& player);
-    bool useItem(const std::string& item, Player& player);
+    bool useItem(const std::string& itemName, Player& player);
     
     bool canExit(const std::string& direction) const;
     void unlockExit(const std::string& direction);
